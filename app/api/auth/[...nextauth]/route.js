@@ -1,6 +1,6 @@
 import NextAuth from "next-auth/next";
 import GoogleProvider from "next-auth/providers/google";
-
+import getSlug from "speakingurl";
 import User from "@models/user";
 import { connectToDB } from "@utils/database";
 
@@ -34,7 +34,9 @@ const handler = NextAuth({
                     await User.create({
                         email: profile.email,
                         //username: profile.name.replace(" ", "").toLowerCase(),
-                        username: "username",
+                        username : getSlug(profile.name, {
+							lang: 'hr'  // Set the language to Croatian ('hr')
+						  }),
                         image: profile.picture
                     })
                 }
