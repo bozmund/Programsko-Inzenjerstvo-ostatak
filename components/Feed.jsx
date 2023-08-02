@@ -25,6 +25,7 @@ const Feed = () => {
   const [searchTimeout, setSearchTimeout] = useState(null);
   const [searchedResults, setSearchedResults] = useState([]);
   
+  const [hasRunEffect, setHasRunEffect] = useState(false);
 
   const fetchPosts = async () => {
     const response = await fetch("/api/prompt");
@@ -33,9 +34,12 @@ const Feed = () => {
     setAllPosts(data);
   };
 
-  useEffect( () => {
-    fetchPosts();
-  }, []);
+  useEffect(() => {
+    if (!hasRunEffect) {
+      fetchPosts();
+      setHasRunEffect(true);
+    }
+  }, [hasRunEffect]);
 
   const filterPrompts = (searchtext) => {
     const regex = new RegExp(searchtext, "i");
